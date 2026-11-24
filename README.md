@@ -1,4 +1,10 @@
-# metamaterials-inverse-design
+# README
+
+## Current Work
+
+## Previous Work
+
+### metamaterials-inverse-design
 
 **_discrete_model_** contains MATLAB code for discrete model simulation. It
 takes 16 design parameters of the geometry, generate the 10by8 metamaterial and
