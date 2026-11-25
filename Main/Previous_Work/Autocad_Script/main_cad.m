@@ -40,7 +40,7 @@ name = ['autocad_design/',case_name,'.scr'];
 fid = fopen(name,'w');
 
 comd = strcat("(command ","setvar ",'"osmode"', " 0)\n");
-fprintf(fid,sprintf(comd)); 
+fprintf(fid,sprintf(comd));
 
 % for pillar holes
 for i=1:n-1
@@ -133,7 +133,7 @@ b2 = b1 - [0,bt];
 b3 = [0,n-0.5].*a+shift;
 b4 = b3 + [0,bt];
 b5 = b2 + [-mt,0];
-b6 = b4 + [-mt,0]; 
+b6 = b4 + [-mt,0];
 
 fprintf(fid,linecad(b1(1),b1(2),b2(1),b2(2)));
 fprintf(fid,linecad(b3(1),b3(2),b4(1),b4(2)));
@@ -153,7 +153,7 @@ b2 = b1 - [0,bt];
 b3 = [n,n-0.5].*a+shift;
 b4 = b3 + [0,bt];
 b5 = b2 + [mt,0];
-b6 = b4 + [mt,0]; 
+b6 = b4 + [mt,0];
 fprintf(fid,linecad(b1(1),b1(2),b2(1),b2(2)));
 fprintf(fid,linecad(b3(1),b3(2),b4(1),b4(2)));
 fprintf(fid,linecad(b5(1),b5(2),b6(1),b6(2)));

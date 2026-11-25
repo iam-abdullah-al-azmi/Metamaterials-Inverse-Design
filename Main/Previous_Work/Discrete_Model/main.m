@@ -139,7 +139,7 @@ for t=1:FrameN
             R0_left = [-0.5,0]' + hori_shift(:,i,j);
             R0_up = [0,+0.5]' + vert_shift(:,i+1,j);
             R0_down = [0,-0.5]' + vert_shift(:,i,j);
-            
+
             Point1 = R0_left;
             Point2 = R0_up;
             Point3 = R0_right;
@@ -173,7 +173,7 @@ base_color = [0.5,0.5,0.5];
 
 for t=1:FrameN
     hold off
-    count1 = count1 + 1;  
+    count1 = count1 + 1;
     % plot the base grid
     for j = 1:m
         plot(2*l.*[j,j],[0,2*(n+1)*l],'--k','linewidth',0.5);hold on
@@ -181,35 +181,35 @@ for t=1:FrameN
     for i = 1:n
         plot([0,2*(m+1)*l],2*l.*[i,i],'--k','linewidth',0.5);hold on
     end
-    
+
     for i=1:n
-        for j=1:m 
+        for j=1:m
             % set the vectors to plot squares
             X=[Point(i,j,t,1,1),Point(i,j,t,2,1),Point(i,j,t,3,1),...
                 Point(i,j,t,4,1)];
             Y=[Point(i,j,t,1,2),Point(i,j,t,2,2),Point(i,j,t,3,2),...
                 Point(i,j,t,4,2)];
             set(gcf,'Color',[1,1,1]);
-            
+
             scale = 1/(pi/4);
-            colorvalue = (abs(thetaR(i,j,t))*scale);            
+            colorvalue = (abs(thetaR(i,j,t))*scale);
             colorvalue = min(max(colorvalue,0),1);cm = jet;
             colorID = max(1,sum(colorvalue > [0:1/length(cm(:,1)):1])); myColor = cm(colorID, :);
-            fill(X,Y,myColor,'FaceAlpha',0.9); hold on          
+            fill(X,Y,myColor,'FaceAlpha',0.9); hold on
             axis([-1,m+2,0,n+1]); axis off
         end
     end
-    
+
     colorvalue = abs(thetaR(1,1,t)*scale);colorvalue = min(max(colorvalue,0),1);cm = jet;
     colorID = max(1,sum(colorvalue > [0:1/length(cm(:,1)):1])); myColor = cm(colorID, :);
-    
+
     X_rec = [l*1,2*l*m+l,2*l*m+l,1*l];
     Y_rec = [2*l,2*l,l,l];
-    fill(X_rec,Y_rec,myColor,'FaceAlpha',1); 
-    
+    fill(X_rec,Y_rec,myColor,'FaceAlpha',1);
+
     Y_rec = Y_rec + (n-1/2)*2*l + UY(n,1,t);
     fill(X_rec,Y_rec,myColor,'FaceAlpha',1);
-    
+
     frame = getframe(gcf);
     writeVideo(myVideo, frame);
     pause(0.00001)
@@ -247,7 +247,7 @@ base_color = [0.5,0.5,0.5];
 
 for t=1:FrameN
     hold off
-    count1 = count1 + 1;  
+    count1 = count1 + 1;
     % plot the base grid
     for j = 1:m
         plot(2*l.*[j,j],[0,2*(n+1)*l],'--k','linewidth',0.5);hold on
@@ -255,35 +255,35 @@ for t=1:FrameN
     for i = 1:n
         plot([0,2*(m+1)*l],2*l.*[i,i],'--k','linewidth',0.5);hold on
     end
-    
+
     for i=1:n
-        for j=1:m 
+        for j=1:m
             % set the vectors to plot squares
             X=[Point(i,j,t,1,1),Point(i,j,t,2,1),Point(i,j,t,3,1),...
                 Point(i,j,t,4,1)];
             Y=[Point(i,j,t,1,2),Point(i,j,t,2,2),Point(i,j,t,3,2),...
                 Point(i,j,t,4,2)];
             set(gcf,'Color',[1,1,1]);
-            
+
             rs = (rs0(i,j) - (Y(2)-Y(4)))/1;
-            colorvalue = (rs/0.2)^1;      
+            colorvalue = (rs/0.2)^1;
             colorvalue = min(max(colorvalue,0),1);cm = jet;
             colorID = max(1,sum(colorvalue > [0:1/length(cm(:,1)):1])); myColor = cm(colorID, :);
-            fill(X,Y,myColor,'FaceAlpha',0.9); hold on          
+            fill(X,Y,myColor,'FaceAlpha',0.9); hold on
             axis([-1,m+2,0,n+1]); axis off
         end
     end
-    
+
     colorvalue = (0);colorvalue = min(max(colorvalue,0),1);cm = jet;
     colorID = max(1,sum(colorvalue > [0:1/length(cm(:,1)):1])); myColor = cm(colorID, :);
-    
+
     X_rec = [l*1,2*l*m+l,2*l*m+l,1*l];
     Y_rec = [2*l,2*l,l,l];
-    fill(X_rec,Y_rec,myColor); 
-    
+    fill(X_rec,Y_rec,myColor);
+
     Y_rec = Y_rec + (n-1/2)*2*l + UY(n,1,t);
     fill(X_rec,Y_rec,myColor);
-    
+
     frame = getframe(gcf);
     writeVideo(myVideo, frame);
     pause(0.00001)
@@ -310,6 +310,3 @@ xticks([0,0.05,0.1]);
 xticklabels({'0','-0.05','-0.1'})
 mkdir('figures');
 saveas(gca,['figures/stress_strain_',file,'.png']);
-
-
-

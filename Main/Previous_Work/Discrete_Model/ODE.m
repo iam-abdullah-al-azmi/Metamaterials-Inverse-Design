@@ -1,6 +1,6 @@
 function dy = ODE(T,y)
 
-global m n alpha Ktheta Ks 
+global m n alpha Ktheta Ks
 global damp_theta damp_u Time
 global progress gamma delta_y load_Time
 global hori_shift vert_shift
@@ -16,7 +16,7 @@ end
 % if T/Time<0.5
 Veloy = delta_y/load_Time;
 % else
-%  Veloy = -delta_y/load_Time*2;   
+%  Veloy = -delta_y/load_Time*2;
 % end
 
 mass = 1;
@@ -63,28 +63,28 @@ for i=1:n
         R0_left = [-0.5,0]' + hori_shift(:,i,j);
         R0_up = [0,+0.5]' + vert_shift(:,i+1,j);
         R0_down = [0,-0.5]' + vert_shift(:,i,j);
-        
+
         R0_right_neighbor = [-0.5,0]' + hori_shift(:,i,j+1);
         R0_left_neighbor = [+0.5,0]' + hori_shift(:,i,j);
         R0_up_neighbor = [0,-0.5]' + vert_shift(:,i+1,j);
         R0_down_neighbor = [0,+0.5]' + vert_shift(:,i,j);
-        
+
         R_right = Rot_matrix(y(Th_cen))*R0_right;
         R_left = Rot_matrix(y(Th_cen))*R0_left;
         R_up = Rot_matrix(y(Th_cen))*R0_up;
         R_down = Rot_matrix(y(Th_cen))*R0_down;
-   
+
 %         R_right = 0.5.*[cos(y(Th_cen)), -sin(y(Th_cen))];
 %         R_up = 0.5.*[sin(y(Th_cen)), cos(y(Th_cen))];
 %         R_left = 0.5.*[-cos(y(Th_cen)), sin(y(Th_cen))];
 %         R_down = 0.5.*[-sin(y(Th_cen)), -cos(y(Th_cen))];
-        
+
         %Elongations (forces) of springs
         D_right=[0,0];D_up=[0,0];D_left=[0,0];D_down=[0,0];
-        
+
         if j~=m %otherwise nothing on the right
 %             D_right = [(y(U_right)-y(U_cen))+0.5*(2-cos(y(Th_cen))-cos(y(Th_right))),...
-%                 (y(V_right)-y(V_cen))+0.5*(sin(y(Th_right))+sin(y(Th_cen)))];           
+%                 (y(V_right)-y(V_cen))+0.5*(sin(y(Th_right))+sin(y(Th_cen)))];
             D_right = [1,0]' - R_right + Rot_matrix(y(Th_right))*R0_right_neighbor ...
                 + [y(U_right)-y(U_cen);y(V_right)-y(V_cen)];
         end
@@ -106,17 +106,17 @@ for i=1:n
             D_down = [0,-1]' - R_down + Rot_matrix(y(Th_down))*R0_down_neighbor ...
                 + [y(U_down)-y(U_cen);y(V_down)-y(V_cen)];
         end
-        
-%         if i==4 && j == 8 
+
+%         if i==4 && j == 8
 %             y(Th_cen)
 %             if y(Th_cen)<-0.6
 %             'test'
 %             end
 %         end
-   
+
 %         if i == 2 && j ==2
 %             'check';
-%             
+%
 %         end
         % Forces and moments
         % Moment from rotational springs
@@ -148,26 +148,26 @@ for i=1:n
             Mm = Mm + Ktheta/4*(d_angle +  gamma*sign(d_angle)*d_angle^2);
             M_cont = M_cont +  contact_moment(y(Th_cen),y(Th_down),reshape(ang_b(i,j,4,:),[2,1]));
         end
-       
-        
+
+
         F(U_cen) = D_right(1) + Ks*D_up(1) + Ks*D_down(1) + D_left(1);
         F(V_cen) = Ks*D_right(2) + D_up(2) + D_down(2) + Ks*D_left(2);
         F(Th_cen) = +M_right+M_left+M_up+M_down+Mm + M_cont;
-        
+
         dy(U_cen) = y(U_cen+3);
         dy(V_cen) = y(V_cen+3);
         dy(Th_cen) = y(Th_cen+3);
         dy(U_cen+3) = F(U_cen)/mass-damp_u*y(U_cen+3);
         dy(V_cen+3) = F(V_cen)/mass-damp_u*y(V_cen+3);
         dy(Th_cen+3) = -F(Th_cen)/J-damp_theta*y(Th_cen+3);
-        
+
         % loadign boundary
         if i == n % the top row units
             %                 y(V_cen) = Dispy;
             dy(V_cen) = Veloy;
             dy(U_cen) = 0;
             dy(Th_cen) = 0;
-            
+
             if flag == 1
                 stress(count) = stress(count) + D_down(2)/m;
                 strain(count) = strain(count) + y(V_cen)/m/(n-1);
@@ -192,10 +192,10 @@ if isnan(th0(1)) || isnan(th0(2))
 else
 %     M1 = (tanh((-theta1 + theta2-th0(1))/w0-w0)+1)*(-m0/2);
 %     M2 = (tanh((-theta2 + theta1-th0(2))/w0-w0)+1)*(m0/2);
-%     
+%
     M1 = -k_contact*max(-theta1 + theta2-th0(1)+0.1,0);
     M2 = k_contact*max(-theta2 + theta1-th0(2)+0.1,0);
-    
+
     M_cont = M1 + M2;
 end
 end
@@ -204,7 +204,3 @@ function Rot = Rot_matrix(theta)
     Rot = [cos(theta),sin(theta);
         -sin(theta),cos(theta)];
 end
-
-
-
-
